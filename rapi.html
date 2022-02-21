@@ -1,0 +1,141 @@
+<script type="text/javascript">
+    RED.nodes.registerType('rapi-search',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            form: {value:""},
+            query: {value:""},
+            fields: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name || "rapi-search";
+        }
+    });
+
+    RED.nodes.registerType('rapi-create',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            form: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name || "rapi-create";
+        }
+    });
+
+    RED.nodes.registerType('rapi-update',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            form: {value:""},
+            id: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name || "rapi-update";
+        }
+    });
+
+    RED.nodes.registerType('rapi-delete',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            form: {value:""},
+            query: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name || "rapi-delete";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="rapi-search">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-form"><i class="fa fa-tag"></i> Form</label>
+        <input type="text" id="node-input-form">
+    </div>
+    <div class="form-row">
+        <label for="node-input-query"><i class="fa fa-tag"></i> Query</label>
+        <input type="text" id="node-input-query">
+    </div>
+    <div class="form-row">
+        <label for="node-input-fields"><i class="fa fa-tag"></i> Field List</label>
+        <input type="text" id="node-input-fields">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="rapi-search">
+    <p>A simple node that execute a search against remedy</p>
+</script>
+
+<script type="text/html" data-template-name= "rapi-create">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-form"><i class="fa fa-tag"></i> Form</label>
+        <input type="text" id="node-input-form">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="rapi-create">
+    <p>A simple node that execute a create against remedy</p>
+</script>
+
+<script type="text/html" data-template-name= "rapi-delete">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-form"><i class="fa fa-tag"></i> Form</label>
+        <input type="text" id="node-input-form">
+    </div>
+    <div class="form-row">
+        <label for="node-input-query"><i class="fa fa-tag"></i> Query</label>
+        <input type="text" id="node-input-query">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="rapi-delete">
+    <p>A simple node that execute a delete query against remedy</p>
+</script>
+
+<script type="text/html" data-template-name= "rapi-update">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-form"><i class="fa fa-tag"></i> Form</label>
+        <input type="text" id="node-input-form">
+    </div>
+    <div class="form-row">
+        <label for="node-input-id"><i class="fa fa-tag"></i> Id</label>
+        <input type="text" id="node-input-id">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="rapi-update">
+    <p>A simple node that execute an update of a record against remedy</p>
+</script>
