@@ -14,11 +14,17 @@ const params = {
     limitMax: process.env.LIMIT_MAX
 }
 
+const myAdapter = new ar.ARAdapter(params)
 
 module.exports = function(RED) {
     function RapiSearchNode(config) {
         RED.nodes.createNode(this, config);
-        this.form = config.form;
+
+        if (config.form) {
+            this.formConfig = RED.nodes.getNode(config.form);
+            this.form = this.formConfig.remedyForm;
+        }
+
         this.query = config.query;
         this.fields = config.fields;
         this.arAdapter = new ar.ARAdapter(params)
@@ -38,7 +44,12 @@ module.exports = function(RED) {
 
     function RapiCreateNode(config) {
         RED.nodes.createNode(this, config);
-        this.form = config.form;
+
+        if (config.form) {
+            this.formConfig = RED.nodes.getNode(config.form);
+            this.form = this.formConfig.remedyForm;
+        }
+
         this.query = config.query;
         this.fields = config.fields;
         this.arAdapter = new ar.ARAdapter(params)
@@ -57,7 +68,10 @@ module.exports = function(RED) {
 
     function RapiDeleteNode(config) {
         RED.nodes.createNode(this, config);
-        this.form = config.form;
+        if (config.form) {
+            this.formConfig = RED.nodes.getNode(config.form);
+            this.form = this.formConfig.remedyForm;
+        }
         this.query = config.query;
         this.arAdapter = new ar.ARAdapter(params)
         const node = this;
@@ -75,7 +89,10 @@ module.exports = function(RED) {
 
     function RapiUpdateNode(config) {
         RED.nodes.createNode(this, config);
-        this.form = config.form;
+        if (config.form) {
+            this.formConfig = RED.nodes.getNode(config.form);
+            this.form = this.formConfig.remedyForm;
+        }
         this.id = config.id;
         this.arAdapter = new ar.ARAdapter(params)
         const node = this;
@@ -90,4 +107,15 @@ module.exports = function(RED) {
         });
     }
     RED.nodes.registerType("rapi-update", RapiUpdateNode);
+
+    function remedyFromNode(n) {
+        RED.nodes.createNode(this,n);
+        this.remedyForm = n.remedyForm;
+    }
+    RED.nodes.registerType("remedyForm",remedyFromNode);
+
+    RED.httpAdmin.get("/forms", RED.auth.needsPermission('forms.read'), async function(req,res) {
+        const forms = await myAdapter.getForms()
+        res.json(forms);
+    });
 }

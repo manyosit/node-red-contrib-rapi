@@ -84,6 +84,54 @@ class ARAdapter {
         }, options.bypassCache);
     }
 
+    async getForms(options) {
+        if (options === undefined) {
+            options = {}
+        }
+        const key = objectHash({options});
+        const params = this.params;
+
+        const port = this.getPort()
+
+        const setOptions = this.setUriOptions
+
+        return remedyCache.get(key, async function() {
+
+            const options = {
+                method: "GET",
+                headers: {
+                    'User-Agent': 'mode-red-rapi',
+                    'Content-Type': 'application/json'
+                }
+            }
+            log.debug('Use options for query', options);
+
+            let uri = params.rapiUri
+                + "/" + params.arServer
+                + "?port=" + port;
+
+            uri = setOptions(uri, options)
+
+            log.debug('start request on:', uri);
+
+            const authHeader = `Basic ${encode64(`${params.arUser}:${params.arPassword}`)}`
+            options.headers['Authorization'] = authHeader
+
+            const fetchResponse = await fetch(uri, options)
+            // catch errors
+            if (fetchResponse && fetchResponse.status && fetchResponse.status >= 400) {
+                log.debug('fetchResponse', fetchResponse)
+                throw {status: fetchResponse.status, statusText: await fetchResponse.text()}
+            }
+            log.debug('fetchResponse', fetchResponse)
+
+            const jsonValue = await fetchResponse.json()
+
+            return jsonValue.forms.sort()
+
+        }, options.bypassCache);
+    }
+
     async create(form, entry, options) {
         const params = this.params;
         log.debug('Use options for create', options);

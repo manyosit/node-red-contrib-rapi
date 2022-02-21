@@ -37,7 +37,13 @@ const arAdapter = new ar.ARAdapter(params)
     log.error('error', error)
 })*/
 
-arAdapter.delete('HPD:IncidentInterface_Create',`'1' LIKE "00000000000351%"`, {}).then(result => {
+/*arAdapter.delete('HPD:IncidentInterface_Create',`'1' LIKE "00000000000351%"`, {}).then(result => {
+    log.debug('result', result)
+}).catch(error => {
+    log.error('error', error)
+})*/
+
+arAdapter.getForms({}).then(result => {
     log.debug('result', result)
 }).catch(error => {
     log.error('error', error)
