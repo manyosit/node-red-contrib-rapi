@@ -4,6 +4,7 @@
         color: '#a6bbcf',
         defaults: {
             name: {value:""},
+            server: {type:"remedyServer", value:""},
             form: {type:"remedyForm", value:""},
             query: {value:""},
             fields: {value:""}
@@ -21,6 +22,7 @@
         color: '#a6bbcf',
         defaults: {
             name: {value:""},
+            server: {type:"remedyServer", value:""},
             form: {type:"remedyForm", value:""},
         },
         inputs:1,
@@ -36,6 +38,7 @@
         color: '#a6bbcf',
         defaults: {
             name: {value:""},
+            server: {type:"remedyServer", value:""},
             form: {type:"remedyForm", value:""},
             id: {value:""}
         },
@@ -52,6 +55,7 @@
         color: '#a6bbcf',
         defaults: {
             name: {value:""},
+            server: {type:"remedyServer", value:""},
             form: {type:"remedyForm", value:""},
             query: {value:""}
         },
@@ -98,12 +102,36 @@
         }
     });
 
+    RED.nodes.registerType('remedyServer',{
+        category: 'config',
+        defaults: {
+            url: {value:"", required:true},
+            server: {value:"", required:true},
+            port: {value:0, required:true, validate:RED.validators.number()}
+        },
+        credentials: {
+            user: {type:"text", required:true},
+            password: {type:"password", required:true}
+        },
+        label: function() {
+            return this.credentials.user + '@' + this.server + ':' + this.port;
+        },
+        oneditprepare: function() {
+        },
+        oneditsave: function() {
+        }
+    });
+
 </script>
 
 <script type="text/html" data-template-name="rapi-search">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-tag"></i> Server</label>
+        <input type="text" id="node-input-server">
     </div>
     <div class="form-row">
         <label for="node-input-form"><i class="fa fa-tag"></i> Form</label>
@@ -129,6 +157,10 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-tag"></i> Server</label>
+        <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
         <label for="node-input-form"><i class="fa fa-tag"></i> Form</label>
         <input type="text" id="node-input-form">
     </div>
@@ -142,6 +174,10 @@
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-tag"></i> Server</label>
+        <input type="text" id="node-input-server">
     </div>
     <div class="form-row">
         <label for="node-input-form"><i class="fa fa-tag"></i> Form</label>
@@ -166,6 +202,10 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-tag"></i> Server</label>
+        <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
         <label for="node-input-form"><i class="fa fa-tag"></i> Form</label>
         <input type="text" id="node-input-form">
     </div>
@@ -181,8 +221,31 @@
 
 <script type="text/html" data-template-name="remedyForm">
     <div class="form-row">
-        <label for="node-config-input-remedyForm"><i class="fa fa-random"></i> <span data-i18n="serial.label.serialport"></span></label>
-        <input type="text" id="node-config-input-remedyForm" style="width:60%;" data-i18n="[placeholder]serial.placeholder.serialport">
+        <label for="node-config-input-remedyForm"><i class="fa fa-random"></i> <span data-i18n="remedy.label.form"></span></label>
+        <input type="text" id="node-config-input-remedyForm" style="width:60%;" data-i18n="[placeholder]remedy.label.form">
         <a id="node-config-lookup-remedyForm" class="btn"><i id="node-config-lookup-remedyForm-icon" class="fa fa-search"></i></a>
+    </div>
+</script>
+
+<script type="text/html" data-template-name= "remedyServer">
+    <div class="form-row">
+        <label for="node-config-input-url"><i class="fa fa-tag"></i> RAPI Url</label>
+        <input type="text" id="node-config-input-url" placeholder="Rapi URL">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-server"><i class="fa fa-tag"></i> Server</label>
+        <input type="text" id="node-config-input-server">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-port"><i class="fa fa-tag"></i> Port</label>
+        <input type="text" id="node-config-input-port">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-user"><i class="fa fa-tag"></i> User</label>
+        <input type="text" id="node-config-input-user">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-password"><i class="fa fa-tag"></i> Password</label>
+        <input type="password" id="node-config-input-password">
     </div>
 </script>

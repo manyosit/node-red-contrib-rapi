@@ -3,7 +3,7 @@ const ar = require('./arquery');
 const path = require("path");
 //const log = require('@manyos/logger').setupLog('test' + path.basename(__filename));
 
-const params = {
+/*const params = {
     arServer: process.env.AR_SERVER,
     arUser: process.env.AR_USER,
     arPassword: process.env.AR_PASSWORD,
@@ -12,11 +12,12 @@ const params = {
     cacheTime: process.env.AR_CACHE_TTL,
     limitDefault: process.env.LIMIT_DEFAULT || 100,
     limitMax: process.env.LIMIT_MAX
-}
+}*/
 
-const myAdapter = new ar.ARAdapter(params)
+//const myAdapter = new ar.ARAdapter(params)
 
 module.exports = function(RED) {
+
     function RapiSearchNode(config) {
         RED.nodes.createNode(this, config);
 
@@ -27,7 +28,13 @@ module.exports = function(RED) {
 
         this.query = config.query;
         this.fields = config.fields;
-        this.arAdapter = new ar.ARAdapter(params)
+
+        if (config.server) {
+            this.serverConfig = RED.nodes.getNode(config.server);
+        }
+
+        this.arAdapter = new ar.ARAdapter(setParams(this.serverConfig))
+
         const node = this;
 
         node.on('input', async function(msg, send, done) {
@@ -52,7 +59,13 @@ module.exports = function(RED) {
 
         this.query = config.query;
         this.fields = config.fields;
-        this.arAdapter = new ar.ARAdapter(params)
+
+        if (config.server) {
+            this.serverConfig = RED.nodes.getNode(config.server);
+        }
+
+        this.arAdapter = new ar.ARAdapter(setParams(this.serverConfig))
+
         const node = this;
 
         node.on('input', async function(msg, send, done) {
@@ -73,7 +86,13 @@ module.exports = function(RED) {
             this.form = this.formConfig.remedyForm;
         }
         this.query = config.query;
-        this.arAdapter = new ar.ARAdapter(params)
+
+        if (config.server) {
+            this.serverConfig = RED.nodes.getNode(config.server);
+        }
+
+        this.arAdapter = new ar.ARAdapter(setParams(this.serverConfig))
+
         const node = this;
 
         node.on('input', async function(msg, send, done) {
@@ -94,7 +113,13 @@ module.exports = function(RED) {
             this.form = this.formConfig.remedyForm;
         }
         this.id = config.id;
-        this.arAdapter = new ar.ARAdapter(params)
+
+        if (config.server) {
+            this.serverConfig = RED.nodes.getNode(config.server);
+        }
+
+        this.arAdapter = new ar.ARAdapter(setParams(this.serverConfig))
+
         const node = this;
 
         node.on('input', async function(msg, send, done) {
@@ -108,14 +133,50 @@ module.exports = function(RED) {
     }
     RED.nodes.registerType("rapi-update", RapiUpdateNode);
 
-    function remedyFromNode(n) {
-        RED.nodes.createNode(this,n);
+    function remedyFormNode(n) {
+        RED.nodes.createNode(this, n);
         this.remedyForm = n.remedyForm;
     }
-    RED.nodes.registerType("remedyForm",remedyFromNode);
+    RED.nodes.registerType("remedyForm", remedyFormNode);
+
+    function remedyServerNode(n) {
+        RED.nodes.createNode(this, n);
+        const node = this;
+        if (node.credentials) {
+            node.user = node.credentials.user;
+            node.password = node.credentials.password;
+        }
+        this.server = n.server;
+        this.url = n.url;
+        this.credentials = n.credentials;
+        this.port = n.port;
+    }
+    RED.nodes.registerType("remedyServer", remedyServerNode, {
+        credentials: {
+            user: {type:"text"},
+            password: {type: "password"}
+        }
+    });
 
     RED.httpAdmin.get("/forms", RED.auth.needsPermission('forms.read'), async function(req,res) {
         const forms = await myAdapter.getForms()
         res.json(forms);
     });
+
+    function setParams(serverConfig) {
+        if (serverConfig) {
+            return {
+                arServer: serverConfig.server,
+                arPort: serverConfig.port,
+                rapiUri: serverConfig.url,
+                arUser: serverConfig.user,
+                arPassword: serverConfig.password,
+                cacheTime: serverConfig.cacheTime || process.env.AR_CACHE_TTL,
+                limitDefault: serverConfig.limitDefault || process.env.LIMIT_DEFAULT || 100,
+                limitMax: serverConfig.limitMax || process.env.LIMIT_MAX
+            }
+        } else {
+            throw "Server not configured"
+        }
+    }
 }

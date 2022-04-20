@@ -32,7 +32,7 @@ class ARAdapter {
 
             const limits = {};
 
-            const options = {
+            const arOptions = {
                 method: "GET",
                 headers: {
                     'User-Agent': 'mode-red-rapi',
@@ -65,9 +65,9 @@ class ARAdapter {
             log.debug('start request on:', uri);
 
             const authHeader = `Basic ${encode64(`${params.arUser}:${params.arPassword}`)}`
-            options.headers['Authorization'] = authHeader
+            arOptions.headers['Authorization'] = authHeader
 
-            const fetchResponse = await fetch(uri, options)
+            const fetchResponse = await fetch(uri, arOptions)
             // catch errors
             if (fetchResponse && fetchResponse.status && fetchResponse.status >= 400) {
                 log.debug('fetchResponse', fetchResponse)
