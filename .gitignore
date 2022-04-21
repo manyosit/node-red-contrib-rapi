@@ -40,7 +40,6 @@ jspm_packages/
 typings/
 
 # imahes
-images/
 uploads/
 
 # Optional npm cache directory
