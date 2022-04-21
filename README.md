@@ -58,4 +58,4 @@ See also https://nodered.org/docs/user-guide/runtime/securing-node-red
 
 Now open Settings -> Manage Palette and install @manyos/node-red-contrib-rapi
 
-![alt text](https://github.com/manyosit/node-red-contrib-rapi/blob/main/palette.png?raw=true)
+![alt text](https://github.com/manyosit/node-red-contrib-rapi/blob/main/images/palette.png?raw=true)
