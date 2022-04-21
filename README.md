@@ -53,3 +53,5 @@ volumes:
 ```
 
 Do not forget to secure your installation.
+
+See also [[https://nodered.org/docs/getting-started/docker]]
