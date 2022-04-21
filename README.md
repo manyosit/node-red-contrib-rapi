@@ -58,4 +58,22 @@ See also https://nodered.org/docs/user-guide/runtime/securing-node-red
 
 Now open Settings -> Manage Palette and install @manyos/node-red-contrib-rapi
 
-![alt text](https://github.com/manyosit/node-red-contrib-rapi/blob/main/images/palette.png?raw=true)
+![Install new nodes](https://github.com/manyosit/node-red-contrib-rapi/blob/main/images/palette.png?raw=true)
+
+You will now have 4 new nodes available.
+
+![Nodelist](https://github.com/manyosit/node-red-contrib-rapi/blob/main/images/nodelist.png?raw=true)
+
+The first time you want to use one of the RAPI nodes you have to setup a server connection:
+
+![Server Config](https://github.com/manyosit/node-red-contrib-rapi/blob/main/images/serverConfig.png?raw=true)
+
+Once done you are ready to go:
+
+![Node Setup](https://github.com/manyosit/node-red-contrib-rapi/blob/main/images/nodeSetup.png?raw=true)
+
+A very simple Testflow could look like this:
+
+![Sample Flow](https://github.com/manyosit/node-red-contrib-rapi/blob/main/images/sampleFlow.png?raw=true)
+
+Enjoy coding!
