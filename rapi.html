@@ -114,7 +114,7 @@
             password: {type:"password", required:true}
         },
         label: function() {
-            return this.credentials.user + '@' + this.server + ':' + this.port;
+            return this.server + ':' + this.port;
         },
         oneditprepare: function() {
         },

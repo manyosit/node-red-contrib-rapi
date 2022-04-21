@@ -9,7 +9,8 @@
   "keywords": [
     "BMC Remedy",
     "Rest",
-    "API"
+    "API",
+    "node-red"
   ],
   "author": "manyos technology GmbH",
   "license": "MIT",
