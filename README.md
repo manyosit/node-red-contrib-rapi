@@ -54,4 +54,6 @@ volumes:
 
 Do not forget to secure your installation.
 
-See also [[https://nodered.org/docs/getting-started/docker]]
+See also https://nodered.org/docs/user-guide/runtime/securing-node-red
+
+Now open Settings -> Manage Palette and install @manyos/node-red-contrib-rapi
