@@ -13,11 +13,19 @@
     "node-red"
   ],
   "author": "manyos technology GmbH",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manyosit/node-red-contrib-rapi.git"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
   "license": "MIT",
   "node-red": {
     "nodes": {
       "rapi-search": "rapi.js"
-    }
+    },
+    "version": ">=2.2.0"
   },
   "dependencies": {
     "@manyos/logger": "^1.3.0",
