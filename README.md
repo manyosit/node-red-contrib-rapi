@@ -76,4 +76,6 @@ A very simple Testflow could look like this:
 
 ![Sample Flow](https://github.com/manyosit/node-red-contrib-rapi/blob/main/images/sampleFlow.png?raw=true)
 
-Enjoy coding!
+Your are now able to create your automations!
+
+In part two we're are going to setup an automation framework that enables you to create new automations in minutes.
