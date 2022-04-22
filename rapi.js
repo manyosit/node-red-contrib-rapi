@@ -159,6 +159,9 @@ module.exports = function(RED) {
     });
 
     RED.httpAdmin.get("/forms", RED.auth.needsPermission('forms.read'), async function(req,res) {
+        const node = RED.nodes.getNode(req.params.id);
+        console.log ('node found', req.params);
+        const myAdapter = node.arAdapter;
         const forms = await myAdapter.getForms()
         res.json(forms);
     });

@@ -1,7 +1,7 @@
 <script type="text/javascript">
     RED.nodes.registerType('rapi-search',{
-        category: 'function',
-        color: '#a6bbcf',
+        category: 'network',
+        color: '#f1873c',
         defaults: {
             name: {value:""},
             server: {type:"remedyServer", value:""},
@@ -18,8 +18,8 @@
     });
 
     RED.nodes.registerType('rapi-create',{
-        category: 'function',
-        color: '#a6bbcf',
+        category: 'network',
+        color: '#f1873c',
         defaults: {
             name: {value:""},
             server: {type:"remedyServer", value:""},
@@ -34,8 +34,8 @@
     });
 
     RED.nodes.registerType('rapi-update',{
-        category: 'function',
-        color: '#a6bbcf',
+        category: 'network',
+        color: '#f1873c',
         defaults: {
             name: {value:""},
             server: {type:"remedyServer", value:""},
@@ -51,8 +51,8 @@
     });
 
     RED.nodes.registerType('rapi-delete',{
-        category: 'function',
-        color: '#a6bbcf',
+        category: 'network',
+        color: '#f1873c',
         defaults: {
             name: {value:""},
             server: {type:"remedyServer", value:""},
@@ -149,6 +149,9 @@
 
 <script type="text/html" data-help-name="rapi-search">
     <p>A simple node that execute a search against remedy</p>
+    <p>Values can be provided in the fields above or as:</p>
+    <li>msg.form</li>
+    <li>msg.query</li>
 </script>
 
 <script type="text/html" data-template-name= "rapi-create">
@@ -168,6 +171,9 @@
 
 <script type="text/html" data-help-name="rapi-create">
     <p>A simple node that execute a create against remedy</p>
+    <p>Values can be provided in the fields above or as:</p>
+    <li>msg.form</li>
+    <li>msg.payload</li>
 </script>
 
 <script type="text/html" data-template-name= "rapi-delete">
@@ -217,6 +223,10 @@
 
 <script type="text/html" data-help-name="rapi-update">
     <p>A simple node that execute an update of a record against remedy</p>
+    <p>Values can be provided in the fields above or as:</p>
+    <li>msg.form</li>
+    <li>msg.id</li>
+    <li>msg.payload</li>
 </script>
 
 <script type="text/html" data-template-name="remedyForm">
