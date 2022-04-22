@@ -10,7 +10,7 @@ class ARAdapter {
     params = {}
     constructor(params) {
         this.params = params;
-        remedyCache = new CacheService(params.cacheTime || 300); // Create a new cache service instance
+        remedyCache = new CacheService(params.cacheTime || 0); // Create a new cache service instance
     }
 
     async search(form, query, fields, options) {
