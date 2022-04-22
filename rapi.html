@@ -40,7 +40,7 @@
             name: {value:""},
             server: {type:"remedyServer", value:""},
             form: {type:"remedyForm", value:""},
-            id: {value:""}
+            requestId: {value:""}
         },
         inputs:1,
         outputs:1,
@@ -78,7 +78,7 @@
             return this.remedyForm;
         },
         oneditprepare: function() {
-            var previous = null;
+            //var previous = null;
 
             try {
                 $("#node-config-input-remedyForm").autocomplete( "destroy" );
@@ -216,8 +216,8 @@
         <input type="text" id="node-input-form">
     </div>
     <div class="form-row">
-        <label for="node-input-id"><i class="fa fa-tag"></i> Id</label>
-        <input type="text" id="node-input-id">
+        <label for="node-input-requestId"><i class="fa fa-tag"></i> Request Id</label>
+        <input type="text" id="node-input-requestId">
     </div>
 </script>
 

@@ -124,7 +124,7 @@ module.exports = function(RED) {
 
         node.on('input', async function(msg, send, done) {
             try {
-                msg.payload = await node.arAdapter.update(node.form || msg.form, node.id || msg.id, msg.payload)
+                msg.payload = await node.arAdapter.update(node.form || msg.form, node.requestId || msg.requestId, msg.payload)
                 node.send(msg);
             } catch (error) {
                 done(error)
