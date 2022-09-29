@@ -28,6 +28,7 @@ module.exports = function(RED) {
 
         this.query = config.query;
         this.fields = config.fields;
+        this.bypassCache = config.bypassCache;
 
         if (config.server) {
             this.serverConfig = RED.nodes.getNode(config.server);
@@ -39,7 +40,9 @@ module.exports = function(RED) {
 
         node.on('input', async function(msg, send, done) {
             try {
-                msg.payload = await node.arAdapter.search(node.form || msg.form, node.query || msg.query, node.fields || msg.fields)
+                const options = {}
+                options.bypassCache = node.bypassCache || msg.bypassCache;
+                msg.payload = await node.arAdapter.search(node.form || msg.form, node.query || msg.query, node.fields || msg.fields, options)
                 //msg.payload = msg.payload.toLowerCase() + ' ' + node.form;
                 node.send(msg);
             } catch (error) {

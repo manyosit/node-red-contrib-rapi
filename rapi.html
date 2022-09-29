@@ -7,7 +7,8 @@
             server: {type:"remedyServer", value:""},
             form: {type:"remedyForm", value:""},
             query: {value:""},
-            fields: {value:""}
+            fields: {value:""},
+            bypassCache: {value:false}
         },
         inputs:1,
         outputs:1,
@@ -145,6 +146,10 @@
         <label for="node-input-fields"><i class="fa fa-tag"></i> Field List</label>
         <input type="text" id="node-input-fields">
     </div>
+    <div class="form-row">
+        <label for="node-input-bypassCache"><i class="fa fa-tag"></i> Bypass Cache</label>
+        <input type="checkbox" id="node-input-bypassCache">
+    </div>
 </script>
 
 <script type="text/html" data-help-name="rapi-search">
@@ -152,6 +157,7 @@
     <p>Values can be provided in the fields above or as:</p>
     <li>msg.form</li>
     <li>msg.query</li>
+    <li>msg.bypassCache</li>
 </script>
 
 <script type="text/html" data-template-name= "rapi-create">
