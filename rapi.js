@@ -115,7 +115,7 @@ module.exports = function(RED) {
             this.formConfig = RED.nodes.getNode(config.form);
             this.form = this.formConfig.remedyForm;
         }
-        this.id = config.id;
+        this.requestId = config.requestId;
         this.enableMerge = config.enableMerge;
         this.mergeHandleDuplicates = config.mergeHandleDuplicates;
         this.mergeSkipRequired = config.mergeSkipRequired;
@@ -132,8 +132,25 @@ module.exports = function(RED) {
         const node = this;
 
         node.on('input', async function(msg, send, done) {
+            let mergeValue = undefined;
+            if (this.enableMerge === true) {
+                mergeValue = parseInt(this.mergeHandleDuplicates);
+                if (this.mergeSkipRequired) {
+                    mergeValue += 1024;
+                }
+                if (this.mergeSkipPattern) {
+                    mergeValue += 2048;
+                }
+                if (this.mergeIgnoreFilter) {
+                    mergeValue += 4096;
+                }
+                if (this.mergeDisableAssoc) {
+                    mergeValue += 8192;
+                }
+            }
+            console.log('id', node.requestId || msg.requestId);
             try {
-                msg.payload = await node.arAdapter.update(node.form || msg.form, node.requestId || msg.requestId, msg.payload)
+                msg.payload = await node.arAdapter.update(node.form || msg.form, node.requestId || msg.requestId, msg.payload, {mergeValue})
                 node.send(msg);
             } catch (error) {
                 done(error)
