@@ -116,6 +116,12 @@ module.exports = function(RED) {
             this.form = this.formConfig.remedyForm;
         }
         this.id = config.id;
+        this.enableMerge = config.enableMerge;
+        this.mergeHandleDuplicates = config.mergeHandleDuplicates;
+        this.mergeSkipRequired = config.mergeSkipRequired;
+        this.mergeSkipPattern = config.mergeSkipPattern;
+        this.mergeIgnoreFilter = config.mergeIgnoreFilter;
+        this.mergeDisableAssoc = config.mergeDisableAssoc;
 
         if (config.server) {
             this.serverConfig = RED.nodes.getNode(config.server);

@@ -1,125 +1,178 @@
 <script type="text/javascript">
-    RED.nodes.registerType('rapi-search',{
+    RED.nodes.registerType('rapi-search', {
         category: 'network',
         color: '#f1873c',
         defaults: {
-            name: {value:""},
-            server: {type:"remedyServer", value:""},
-            form: {type:"remedyForm", value:""},
-            query: {value:""},
-            fields: {value:""},
-            bypassCache: {value:false}
+            name: {value: ""},
+            server: {type: "remedyServer", value: ""},
+            form: {type: "remedyForm", value: ""},
+            query: {value: ""},
+            fields: {value: ""},
+            bypassCache: {value: false}
         },
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "file.png",
-        label: function() {
+        label: function () {
             return this.name || "rapi-search";
         }
     });
 
-    RED.nodes.registerType('rapi-create',{
+    RED.nodes.registerType('rapi-create', {
         category: 'network',
         color: '#f1873c',
         defaults: {
-            name: {value:""},
-            server: {type:"remedyServer", value:""},
-            form: {type:"remedyForm", value:""},
+            name: {value: ""},
+            server: {type: "remedyServer", value: ""},
+            form: {type: "remedyForm", value: ""},
         },
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "file.png",
-        label: function() {
+        label: function () {
             return this.name || "rapi-create";
         }
     });
 
-    RED.nodes.registerType('rapi-update',{
+    RED.nodes.registerType('rapi-update', {
         category: 'network',
         color: '#f1873c',
         defaults: {
-            name: {value:""},
-            server: {type:"remedyServer", value:""},
-            form: {type:"remedyForm", value:""},
-            requestId: {value:""}
+            name: {value: ""},
+            server: {type: "remedyServer", value: ""},
+            form: {type: "remedyForm", value: ""},
+            requestId: {value: ""},
+            enableMerge: {value: ""},
+            mergeHandleDuplicates: {value: 1},
+            mergeSkipRequired: {value: ""},
+            mergeSkipPattern: {value: ""},
+            mergeIgnoreFilter: {value: ""},
+            mergeDisableAssoc: {value: ""}
         },
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "file.png",
-        label: function() {
+        label: function () {
             return this.name || "rapi-update";
+        },
+        oneditprepare: function () {
+
+            $("#node-input-mergeHandleDuplicates").typedInput({
+                types: [
+                    {
+                        value: "mergeType",
+                        options: [
+                            { value: "1", label: "Generate an error "},
+                            { value: "2", label: "Create a new entry with a new ID"},
+                            { value: "3", label: "Delete the existing entry and create a new one"},
+                            { value: "4", label: "Update the fields"},
+                            { value: "5", label: "Always generate a new entry ID"},
+                            { value: "6", label: "Generates an error for records with existing unique field"}
+                        ]
+                    }
+                ]
+            })
+
+            function updateMergeOptions() {
+                if ($("#node-input-enableMerge").is(':checked')) {
+                    $("#node-row-merge").show();
+                } else {
+                    $("#node-row-merge").hide();
+                }
+            }
+
+            if (this.enableMerge) {
+                $('#node-input-enableMerge').prop('checked', true);
+                $('#node-input-mergeHandleDuplicates').val(this.mergeHandleDuplicates);
+                $('#node-input-mergeSkipRequired').val(this.mergeSkipRequired);
+                $('#node-input-mergeSkipPattern').val(this.mergeSkipPattern);
+                $('#node-input-mergeIgnoreFilter').val(this.mergeIgnoreFilter);
+                $('#node-input-mergeDisableAssoc').val(this.mergeDisableAssoc);
+            } else {
+                $('#node-input-enableMerge').prop('checked', false);
+            }
+            updateMergeOptions();
+            $("#node-input-enableMerge").on("click", function () {
+                updateMergeOptions();
+            });
         }
+        /*,
+        oneditsave: function () {
+            if (!$("#node-input-enablemerge").is(':checked')) {
+                $("#node-input-tls").val("_ADD_");
+            }
+        }*/
     });
 
-    RED.nodes.registerType('rapi-delete',{
+    RED.nodes.registerType('rapi-delete', {
         category: 'network',
         color: '#f1873c',
         defaults: {
-            name: {value:""},
-            server: {type:"remedyServer", value:""},
-            form: {type:"remedyForm", value:""},
-            query: {value:""}
+            name: {value: ""},
+            server: {type: "remedyServer", value: ""},
+            form: {type: "remedyForm", value: ""},
+            query: {value: ""}
         },
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "file.png",
-        label: function() {
+        label: function () {
             return this.name || "rapi-delete";
         }
     });
 
 
-    RED.nodes.registerType('remedyForm',{
+    RED.nodes.registerType('remedyForm', {
         category: 'config',
         defaults: {
             //name: {value:""},
-            remedyForm: {value:"",required:true}
+            remedyForm: {value: "", required: true}
         },
-        label: function() {
+        label: function () {
             return this.remedyForm;
         },
-        oneditprepare: function() {
+        oneditprepare: function () {
             //var previous = null;
 
             try {
-                $("#node-config-input-remedyForm").autocomplete( "destroy" );
-            } catch(err) {
+                $("#node-config-input-remedyForm").autocomplete("destroy");
+            } catch (err) {
             }
-            $("#node-config-lookup-remedyForm").click(function() {
+            $("#node-config-lookup-remedyForm").click(function () {
                 $("#node-config-lookup-remedyForm").addClass('disabled');
-                $.getJSON('forms',function(data) {
+                $.getJSON('forms', function (data) {
                     $("#node-config-lookup-remedyForm").removeClass('disabled');
                     $("#node-config-input-remedyForm").autocomplete({
-                        source:data,
-                        minLength:0,
-                        close: function( event, ui ) {
-                            $("#node-config-input-remedyForm").autocomplete( "destroy" );
+                        source: data,
+                        minLength: 0,
+                        close: function (event, ui) {
+                            $("#node-config-input-remedyForm").autocomplete("destroy");
                         }
-                    }).autocomplete("search","");
+                    }).autocomplete("search", "");
                 });
             });
         },
-        oneditsave: function() {
+        oneditsave: function () {
         }
     });
 
-    RED.nodes.registerType('remedyServer',{
+    RED.nodes.registerType('remedyServer', {
         category: 'config',
         defaults: {
-            url: {value:"", required:true},
-            server: {value:"", required:true},
-            port: {value:0, required:true, validate:RED.validators.number()}
+            url: {value: "", required: true},
+            server: {value: "", required: true},
+            port: {value: 0, required: true, validate: RED.validators.number()}
         },
         credentials: {
-            user: {type:"text", required:true},
-            password: {type:"password", required:true}
+            user: {type: "text", required: true},
+            password: {type: "password", required: true}
         },
-        label: function() {
+        label: function () {
             return this.server + ':' + this.port;
         },
-        oneditprepare: function() {
+        oneditprepare: function () {
         },
-        oneditsave: function() {
+        oneditsave: function () {
         }
     });
 
@@ -160,7 +213,7 @@
     <li>msg.bypassCache</li>
 </script>
 
-<script type="text/html" data-template-name= "rapi-create">
+<script type="text/html" data-template-name="rapi-create">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -182,7 +235,7 @@
     <li>msg.payload</li>
 </script>
 
-<script type="text/html" data-template-name= "rapi-delete">
+<script type="text/html" data-template-name="rapi-delete">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -208,7 +261,7 @@
     <li>msg.query</li>
 </script>
 
-<script type="text/html" data-template-name= "rapi-update">
+<script type="text/html" data-template-name="rapi-update">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -225,6 +278,33 @@
         <label for="node-input-requestId"><i class="fa fa-tag"></i> Request Id</label>
         <input type="text" id="node-input-requestId">
     </div>
+    <div class="form-row" id="node-input-merge-enable">
+        <label> Use Merge</label>
+        <input type="checkbox" id="node-input-enableMerge"
+               style="display: inline-block; width:auto; vertical-align:top;">
+        <div id="node-row-merge" class="hide">
+            <div class="form-row">
+                <i class="fa fa-tag"></i> Handle Duplicates</label>
+                <input type="text" style="width: 300px" id="node-input-mergeHandleDuplicates">
+            </div>
+            <div class="form-row">
+                <i class="fa fa-tag"></i> Skip required fields</label>
+                <input type="checkbox" style="width: 300px" id="node-input-mergeSkipRequired">
+            </div>
+            <div class="form-row">
+                <i class="fa fa-tag"></i> Skip Pattern Check</label>
+                <input type="checkbox" style="width: 300px" id="node-input-mergeSkipPattern">
+            </div>
+            <div class="form-row">
+                <i class="fa fa-tag"></i> Ignore Filter Workflow</label>
+                <input type="checkbox" style="width: 300px" id="node-input-mergeIgnoreFilter">
+            </div>
+            <div class="form-row">
+                <i class="fa fa-tag"></i> Disable association</label>
+                <input type="checkbox" style="width: 300px" id="node-input-mergeDisableAssoc">
+            </div>
+        </div>
+    </div>
 </script>
 
 <script type="text/html" data-help-name="rapi-update">
@@ -237,13 +317,16 @@
 
 <script type="text/html" data-template-name="remedyForm">
     <div class="form-row">
-        <label for="node-config-input-remedyForm"><i class="fa fa-random"></i> <span data-i18n="remedy.label.form"></span></label>
-        <input type="text" id="node-config-input-remedyForm" style="width:60%;" data-i18n="[placeholder]remedy.label.form">
-        <a id="node-config-lookup-remedyForm" class="btn"><i id="node-config-lookup-remedyForm-icon" class="fa fa-search"></i></a>
+        <label for="node-config-input-remedyForm"><i class="fa fa-random"></i> <span
+                data-i18n="remedy.label.form"></span></label>
+        <input type="text" id="node-config-input-remedyForm" style="width:60%;"
+               data-i18n="[placeholder]remedy.label.form">
+        <a id="node-config-lookup-remedyForm" class="btn"><i id="node-config-lookup-remedyForm-icon"
+                                                             class="fa fa-search"></i></a>
     </div>
 </script>
 
-<script type="text/html" data-template-name= "remedyServer">
+<script type="text/html" data-template-name="remedyServer">
     <div class="form-row">
         <label for="node-config-input-url"><i class="fa fa-tag"></i> RAPI Url</label>
         <input type="text" id="node-config-input-url" placeholder="Rapi URL">
