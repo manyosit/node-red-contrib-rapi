@@ -188,8 +188,13 @@ class ARAdapter {
 
         log.debug('start request on:', uri);
 
+        let updateMethod = 'PUT';
+        if (options.mergeValue) {
+            updateMethod = 'PATCH'
+        }
+
         let arOptions = {
-            method: 'PUT',
+            method: updateMethod,
             headers: {},
             body: JSON.stringify({
                 id,
@@ -367,6 +372,9 @@ class ARAdapter {
                 if (sortString != null && sortString != undefined) {
                     uri = uri + "&sort=" + sortString;
                 }
+            }
+            if (options.mergeValue){
+                uri = uri + `&mergeOptions=${options.mergeValue}`;
             }
             //todo Test
             if (options.impersonateUser) {
