@@ -148,7 +148,6 @@ module.exports = function(RED) {
                     mergeValue += 8192;
                 }
             }
-            console.log('id', node.requestId || msg.requestId);
             try {
                 msg.payload = await node.arAdapter.update(node.form || msg.form, node.requestId || msg.requestId, msg.payload, {mergeValue})
                 node.send(msg);
