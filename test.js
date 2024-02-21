@@ -9,24 +9,19 @@ const params = {
     arPassword: process.env.AR_PASSWORD,
     arPort: process.env.AR_PORT,
     rapiUri: process.env.RAPI_URL,
-    cacheTime: 0,
+    cacheTime: process.env.AR_CACHE_TTL,
     limitDefault: process.env.LIMIT_DEFAULT || 5,
     limitMax: process.env.LIMIT_MAX
 }
 
 const arAdapter = new ar.ARAdapter(params)
 
-/*arAdapter.search('PCT:Product Catalog',`'Product Name'="Windows Account / Groups" and 'Status'="Enabled"`,'Product Name, Product Categorization Tier 1, Product Categorization Tier 2, Product Categorization Tier 3, Manufacturer',{}).then(result => {
+/*arAdapter.search('AST:Product','1=1','Name',{}).then(result => {
     log.debug('result', result)
     log.debug('data', result.data[0])
 }).catch(error => {
     log.error('error', error)
-})*/
-
-
-arAdapter.search("MYS:SMILEconnect_QueueData", '1=1', "", {countOnly:true}).then(result => {
-    log.debug(result)
-})
+}) */
 
 /*arAdapter.create('HPD:IncidentInterface_Create',{"Description":"MyDoc", "Urgency":1000, "Reported Source": 1000, "Impact":1000, "Login_ID": "Allen", "Service_Type":0}, {}).then(result => {
     log.debug('result', result)
@@ -48,8 +43,8 @@ arAdapter.search("MYS:SMILEconnect_QueueData", '1=1', "", {countOnly:true}).then
     log.error('error', error)
 })*/
 
-/*arAdapter.getForms({}).then(result => {
+arAdapter.getForms({}).then(result => {
     log.debug('result', result)
 }).catch(error => {
     log.error('error', error)
-})*/
+})

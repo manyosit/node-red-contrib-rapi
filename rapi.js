@@ -117,11 +117,13 @@ module.exports = function(RED) {
         }
         this.requestId = config.requestId;
         this.enableMerge = config.enableMerge;
+        this.multiMatchOption = config.multiMatchOption;
         this.mergeHandleDuplicates = config.mergeHandleDuplicates;
         this.mergeSkipRequired = config.mergeSkipRequired;
         this.mergeSkipPattern = config.mergeSkipPattern;
         this.mergeIgnoreFilter = config.mergeIgnoreFilter;
         this.mergeDisableAssoc = config.mergeDisableAssoc;
+        this.query = config.query;
 
         if (config.server) {
             this.serverConfig = RED.nodes.getNode(config.server);
@@ -148,8 +150,14 @@ module.exports = function(RED) {
                     mergeValue += 8192;
                 }
             }
+            let multiMatchOption = undefined;
+            if (this.multiMatchOption) {
+                multiMatchOption = parseInt(this.multiMatchOption);
+            }
+
+            const query = node.query || msg.query;
             try {
-                msg.payload = await node.arAdapter.update(node.form || msg.form, node.requestId || msg.requestId, msg.payload, {mergeValue})
+                msg.payload = await node.arAdapter.update(node.form || msg.form, node.requestId || msg.requestId, msg.payload, {mergeValue, query, multiMatchOption})
                 node.send(msg);
             } catch (error) {
                 done(error)

@@ -198,6 +198,9 @@ class ARAdapter {
             headers: {},
             body: JSON.stringify({
                 id,
+                query: options.query,
+                multiMatchOption: options.multiMatchOption,
+                mergeOptions: options.mergeValue,
                 values: entryData
             })
         };
@@ -373,9 +376,10 @@ class ARAdapter {
                     uri = uri + "&sort=" + sortString;
                 }
             }
+            /* Deprecated. In Body now.
             if (options.mergeValue){
                 uri = uri + `&mergeOptions=${options.mergeValue}`;
-            }
+            }*/
             //todo Test
             if (options.impersonateUser) {
                 uri = uri + "&impersonateUser=" + options.impersonateUser;
